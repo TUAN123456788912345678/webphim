@@ -171,7 +171,7 @@
       <script type="text/javascript">
          S('.filter-sidebar').click(function(){
             var href = $(this).attra('href');
-            if(href=='#nagy'){
+            if(href=='#ngay'){
                var value =0;
             }else if(href=='tuan'){
                var value = 1;

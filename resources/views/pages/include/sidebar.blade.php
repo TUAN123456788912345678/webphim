@@ -56,19 +56,19 @@
                   </div>
                   <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#ngay" role="tab" aria-controls="pills-home" aria-selected="true">Ngày</a>
+                            <a class="nav-link filter-sidebar" id="pills-home-tab" data-toggle="pill" href="#ngay" role="tab" aria-controls="pills-home" aria-selected="true">Ngày</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#tuan" role="tab" aria-controls="pills-profile" aria-selected="false">Tuần</a>
+                            <a class="nav-link filter-sidebar" id="pills-profile-tab" data-toggle="pill" href="#tuan" role="tab" aria-controls="pills-profile" aria-selected="false">Tuần</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#thang" role="tab" aria-controls="pills-contact" aria-selected="false">Tháng</a>
+                            <a class="nav-link filter-sidebar" id="pills-contact-tab" data-toggle="pill" href="#thang" role="tab" aria-controls="pills-contact" aria-selected="false">Tháng</a>
                           </li>
                         </ul>
                   <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade " id="ngay" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <div id="halim-ajax-popular-post" class="popular-post">
-                           <div class="item post-37176">
+                       <div id="halim-ajax-popular-post" class="popular-post">
+                          <!--  <div class="item post-37176">
                               <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
                                  <div class="item-link">
                                     <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798" class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
@@ -82,9 +82,10 @@
                                  <span style="width: 0%"></span>
                                  </span>
                               </div>
+                           </div>-->
+                     
                            </div>
-                          
-                          
+                       
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tuan" role="tabpanel" aria-labelledby="pills-profile-tab"> <div id="halim-ajax-popular-post" class="popular-post">
