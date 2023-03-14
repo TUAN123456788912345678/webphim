@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\Category;
 use App\Models\Genre;
+use App\Models\Movie_Genre;
 use App\Models\Country;
 use Carbon\Carbon;
+use Storage;
+use File;
 class MovieController extends Controller
 {
     /**
@@ -17,7 +20,13 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $list = Movie::with('category','genre','country')->orderBy('id','DESC')->get();
+        $list = Movie::with('category','movie_genre','country','genre')->orderBy('id','DESC')->get();
+        $path = public_path()."/json/";
+        if(!is_dir($path)){
+            mkdir($path,0777,true);
+        }
+        File::put($path.'movies.json',json_encode($list));
+
         return view('admincp.movie.index', compact('list'));
     }
 
@@ -30,8 +39,9 @@ class MovieController extends Controller
     {
         $category = Category::pluck('title','id');
         $genre = Genre::pluck('title','id');
+        $list_genre = Genre::all();
         $country = Country::pluck('title','id');
-        return view('admincp.movie.form', compact('category','genre','country'));
+        return view('admincp.movie.form', compact('category','genre','country','list_genre'));
     }
 
     public function update_year(Request $request){
@@ -40,33 +50,45 @@ class MovieController extends Controller
         $movie->year = $data ['year'];
         $movie->save();
     }
-    public function update_topview(Request $request){
+    public function update_season(Request $request){
+        $data =$request->all();
+        $movie =Movie::find($data['id_phim']);
+        $movie->season = $data ['season'];
+        $movie->save();
+    }
+   
+     public function update_topview(Request $request){
         $data =$request->all();
         $movie =Movie::find($data['id_phim']);
         $movie->topview = $data ['topview'];
         $movie->save();
     }
-    public function filter_topview(Request $request){
-        $data =$request->all();
-        $movie =Movie::where('topview',$data['value'])->orderBy('ngaycapnhat','DESC')->take(20)->get();
-        $output='';
+    public function filter_topviewf(Request $request ){
+        $data = $requestr->all();
+        $movie = Movie::where('topview',$data['value'])->orderBy('ngaycapnhat'.'DESC')->take(20)->get();
+        $output ='';
         foreach($movie as $key => $mov){
-                                if($mov->resolution==0){
-                                     $text='HD';
-                                 }elseif($mov->resolution==1){
-                                     $text='SD';
-                                 }
-                                 elseif($mov->resolution==2){
-                                    $text='HDCam';
-                                 }
-                                 else{
-                                    $text='Cam';
-                                }
-            $output.='<div class="item">
+            if($mov->resolution==0){
+                                        $text = 'HD';
+                                    }elseif($mov->resolution==1){
+                                        $text ='SD';
+                                    }
+                                    elseif($mov->resolution==2){
+                                         $text ='HDCam';
+                                    }
+                                    elseif($mov->resolution==2){
+                                         $text ='Cam';
+                                    }
+                                    else{
+                                        $text ='FullHD';
+                                    }
+            $output.=' <div class="item">
                               <a href="'.url('phim/'.$mov->slug).'" title="'.$mov->title.'">
                                  <div class="item-link">
-                                    <img src="'.url('uploads/movie/'.$mov->image).'" class="lazy post-thumb" alt="'.$mov->title.'" title="'.$mov->title.'" />
-                                    <span class="is_trailer">'.$text.'</span>
+                                    <img src="'.url('uploads/movie/' .$mov->image).'" class="lazy post-thumb" alt="'.$mov->title.'" title="'.$mov->title.'" />
+                                    <span class="is_trailer">
+                                        '.$text.'
+                                    </span>
                                  </div>
                                  <p class="title">'.$mov->title.'</p>
                               </a>
@@ -80,7 +102,6 @@ class MovieController extends Controller
         }
         echo $output;
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -92,6 +113,8 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = new Movie();
         $movie->title = $data['title'];
+        $movie->trailer = $data['trailer'];
+        $movie->sotap = $data['sotap'];
         $movie->tags = $data['tags'];
         $movie->thoiluong = $data['thoiluong'];
         $movie->phude = $data['phude'];
@@ -102,7 +125,10 @@ class MovieController extends Controller
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
-        $movie->genre_id = $data['genre_id'];
+        foreach($data['genre'] as $key =>$gen){
+            $movie->genre_id= $gen[0];
+        }
+        
         $movie->country_id = $data['country_id'];
         $movie->ngaytao = Carbon::now('Asia/Ho_Chi_Minh'); 
         $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
@@ -118,7 +144,10 @@ class MovieController extends Controller
             $movie->image = $new_image;
         }
         $movie->save();
-        return redirect()->back();
+        //Them nhieu the loai cho phim-->
+        $movie->movie_genre()->attach($data['genre']);
+
+        return redirect()->route('movie.index');
     }
 
     /**
@@ -142,9 +171,11 @@ class MovieController extends Controller
     {
         $category = Category::pluck('title','id');
         $genre = Genre::pluck('title','id');
+        $list_genre = Genre::all();
         $country = Country::pluck('title','id');
         $movie =  Movie::find($id);
-        return view('admincp.movie.form', compact('category','genre','country','movie'));
+        $movie_genre= $movie->movie_genre;
+        return view('admincp.movie.form', compact('category','genre','country','movie','list_genre','movie_genre'));
     }
 
     /**
@@ -159,6 +190,8 @@ class MovieController extends Controller
         $data = $request->all();
         $movie = Movie::find($id);
         $movie->title = $data['title'];
+        $movie->trailer = $data['trailer']; 
+        $movie->sotap = $data['sotap'];
         $movie->tags = $data['tags'];
         $movie->thoiluong = $data['thoiluong'];
         $movie->phude = $data['phude'];
@@ -169,7 +202,10 @@ class MovieController extends Controller
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
-        $movie->genre_id = $data['genre_id'];
+        foreach($data['genre'] as $key =>$gen){
+            $movie->genre_id= $gen[0];
+        }
+        
         $movie->country_id = $data['country_id'];
         $movie->ngaycapnhat = Carbon::now('Asia/Ho_Chi_Minh');
 
@@ -187,7 +223,10 @@ class MovieController extends Controller
             }
         }
         $movie->save();
-        return redirect()->back();
+        //Them nhieu the loai cho phim-->
+        $movie->movie_genre()->sync($data['genre']);
+        
+        return redirect()->route('movie.index');
     }
 
     /**
@@ -199,9 +238,15 @@ class MovieController extends Controller
     public function destroy($id)
     {
         $movie = Movie::find($id);
+        //xoá ảnh
         if(file_exists('uploads/movie/'.$movie->image)){
             unlink('uploads/movie/'.$movie->image);
         }
+        
+        //xoá thể loại
+    
+        Movie_Genre::whereIn('movie_id',[$movie->id])->delete();
+        
         $movie->delete();
         return redirect()->back();
     }

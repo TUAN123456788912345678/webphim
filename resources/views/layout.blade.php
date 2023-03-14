@@ -13,7 +13,7 @@
       <link rel="shortcut icon" href="https://www.pngkey.com/png/detail/360-3601772_your-logo-here-your-company-logo-here-png.png" type="image/x-icon" />
       <meta name="revisit-after" content="1 days" />
       <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
-      <title>Phim hay 2021 - Xem phim hay nhất</title>
+      <title>Phim hay 2023 - Xem phim hay nhất</title>
       <meta name="description" content="Phim hay 2021 - Xem phim hay nhất, xem phim online miễn phí, phim hot , phim nhanh" />
       <link rel="canonical" href="">
       <link rel="next" href="" />
@@ -21,7 +21,7 @@
       <meta property="og:title" content="Phim hay 2020 - Xem phim hay nhất" />
       <meta property="og:description" content="Phim hay 2020 - Xem phim hay nhất, phim hay trung quốc, hàn quốc, việt nam, mỹ, hong kong , chiếu rạp" />
       <meta property="og:url" content="" />
-      <meta property="og:site_name" content="Phim hay 2021- Xem phim hay nhất" />
+      <meta property="og:site_name" content="Phim hay 2023- Xem phim hay nhất" />
       <meta property="og:image" content="" />
       <meta property="og:image:width" content="300" />
       <meta property="og:image:height" content="55" />
@@ -51,19 +51,28 @@
                <div class="col-md-5 col-sm-6 halim-search-form hidden-xs">
                   <div class="header-nav">
                      <div class="col-xs-12">
-                        <form id="search-form-pc" name="halimForm" role="search" action="" method="GET">
+                        <form id="search-form-pc" name="halimForm" role="search"action="{{route('tim-kiem')}}" method="GET">
                            <div class="form-group">
                               <div class="input-group col-xs-12">
-                                 <input id="search" type="text" name="s" class="form-control" placeholder="Tìm kiếm..." autocomplete="off" required>
-                                 <i class="animate-spin hl-spin4 hidden"></i>
+                              <form >
+                                 <input type="text" name="search"  id="timkiem" name="search" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
+                                 <button  class="btn btn-primary" > Tìm kiếm</button>
+                              
                               </div>
                            </div>
                         </form>
-                        <ul class="ui-autocomplete ajax-results hidden"></ul>
+                        <ul class="list-group" id="result" style="display:none;"></ul>
                      </div>
                   </div>
                </div>
-               <div class="col-md-4 hidden-xs">
+               <div class="col-md hidden-xs">
+
+                   <button  > <a href="/login" class="btn btn-warning"> Đăng nhập</a></button>
+                     <button  ><a href="/register" class="btn btn-primary"> Đăng ký</a></button>
+               
+                  
+               </div>
+               <div class="col-md hidden-xs">
                   <div id="get-bookmark" class="box-shadow"><i class="hl-bookmark"></i><span> Bookmarks</span><span class="count">0</span></div>
                   <div id="bookmark-list" class="hidden bookmark-list-on-pc">
                      <ul style="margin: 0;"></ul>
@@ -165,30 +174,77 @@
      
       <script type='text/javascript' src='{{asset('js/bootstrap.min.js?ver=5.7.2')}}' id='bootstrap-js'></script>
       <script type='text/javascript' src='{{asset('js/owl.carousel.min.js?ver=5.7.2')}}' id='carousel-js'></script>
-     
-      <script type='text/javascript' src='{{asset('js/halimtheme-core.min.js?ver=1626273138')}}' id='halim-init-js'></script>
       
-      <script type="text/javascript">
-         S('.filter-sidebar').click(function(){
-            var href = $(this).attra('href');
-            if(href=='#ngay'){
-               var value =0;
-            }else if(href=='tuan'){
-               var value = 1;
-            }else{
-               var valueval =2
-            }
-            $.ajaxa({
-               url:"{{url('/filter-topview-phim')}}",
-               method:"GET",
-               data:{value:value},
-               success:functionf(data)
-                  {
-                     $('#show_ngay_'+value).html(data);
-                  }
+      <div id="fb-root"></div>
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0" nonce="uMRQ9LuF"></script>
+      <script type='text/javascript' src='{{asset('js/halimtheme-core.min.js?ver=1626273138')}}' id='halim-init-js'></script>
+     
+     <script type="text/javascript">
+        $(document).ready(function(){
+            $('#timkiem').keyup(function(){
+               $('#result').html('');
+               var search =$('#timkiem').val();
+               if(search!=''){
+                  $('#result').css('display','inherit');
+                  var expression = new RegExp(search,"i");
+                  $.getJSON('/json/movies.json',function(data){
+                     $.each(data, function(key, value){
+                        if(value.title.search(expression)!= -1 || value.description.search(expression)!= -1){
+                          $('#result').append('<li style="cursor:pointer; display: flex; max-height: 200px;" class="list-group-item link-class"><img src="uploads/movie/'+value.image+'" width="100" class="" /><div style="flex-direction: column; margin-left: 2px;"><h4 width="100%">'+value.title+'</h4><span style="display: -webkit-box; max-height: 8.2rem; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; white-space: normal; -webkit-line-clamp: 5; line-height: 1.6rem;" class="text-muted">| '+value.description+'</span></div></li>');
+                        }
+                     });
+                  })
+               }else{
+                  $('#result').css('display','none');
+               }
+            })
+
+            $('#result').on('click','li',function(){
+               var click_text = $(this).text().split('|');
+               $('#timkiem') .val($.trim(click_text[0]) );
+               $("#result").html('');
+               $('#result').css('display','none');
             });
-         })
+
+
+
+
+
+
+        })
+
+     </script>
+
+      <script type="text/javascript">
+         $(".watch_trailer").click(function(e){
+            e.preventDefaultpre();
+            var aid = $(this).attr("href");
+            $('html,body').animate({scrollTop: $(aid).offset().top},'slow');
+         });
+
       </script>
+    <script type="text/javascript">
+       $('.filter-sidebar').click(function(){
+         var href = $(this).attr('href');
+         if(href=='#ngay'){
+            var value = 0;
+         }else if(href=='#tuan'){
+            var value =1
+         }else{
+            var valueva =2
+         }
+         $.ajax({
+            url:"{{url('/filter-topview-phim')}}",
+            method:"GET",
+            data:{value:value}
+            success:function(data)
+                  {
+                     $('#show'+value).html(data);
+                  }
+         });
+
+       })
+    </script>
      
      
    

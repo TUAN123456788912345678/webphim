@@ -25,22 +25,30 @@
                            <a class="halim-thumb" href="{{route('movie',$mov->slug)}}">
                               <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="{{$mov->title}}" title="{{$mov->title}}"></figure>
                               <span class="status">
-                                 @if($mov->resolution==0)
+                                @if($mov->resolution==0)
                                           HD
-                                     @elseif($mov->resolution==1)
+                                      @elseif($mov->resolution==1)
                                           SD
-                                     @elseif($mov->resolution==2)
+                                      @elseif($mov->resolution==2)
                                           HDCam
-                                     @elseif($mov->resolution==3)
+                                      @elseif($mov->resolution==3)
                                           Cam
-                                     @else
+                                      @elseif($mov->resolution==4)
                                           FullHD
-                                     @endif
+                                      @else
+                                          Trailer
+                                      @endif
                               </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
-                                    @if($mov->phude==0)
+                                   @if($mov->phude==0)
                                        Phụ đề
-                                   @else
+                                        @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
+                                @else
                                        Thuyết minh
+                                       @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
                                    @endif
                               </span> 
                               <div class="icon_overlay"></div>

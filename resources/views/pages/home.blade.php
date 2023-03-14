@@ -50,20 +50,28 @@
                                  <span class="status">
                                      @if($hot->resolution==0)
                                           HD
-                                     @elseif($hot->resolution==1)
+                                      @elseif($hot->resolution==1)
                                           SD
-                                     @elseif($hot->resolution==2)
+                                      @elseif($hot->resolution==2)
                                           HDCam
-                                     @elseif($hot->resolution==3)
+                                      @elseif($hot->resolution==3)
                                           Cam
-                                     @else
+                                      @elseif($hot->resolution==4)
                                           FullHD
-                                     @endif
+                                      @else
+                                          Trailer
+                                      @endif
                                  </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
-                                    @if($hot->phude==0)
+                                     @if($hot->phude==0)
                                        Phụ đề
-                                   @else
+                                        @if($hot->season!=0)
+                                          - Seanson {{$hot->season}}
+                                       @endif
+                                @else
                                        Thuyết minh
+                                       @if($hot->season!=0)
+                                          - Seanson{{$hot->season}}
+                                       @endif
                                    @endif
                                  </span> 
                                  <div class="icon_overlay"></div>
@@ -102,20 +110,28 @@
                               <span class="status">
                                   @if($mov->resolution==0)
                                           HD
-                                     @elseif($mov->resolution==1)
+                                      @elseif($mov->resolution==1)
                                           SD
-                                     @elseif($mov->resolution==2)
+                                      @elseif($mov->resolution==2)
                                           HDCam
-                                     @elseif($mov->resolution==3)
+                                      @elseif($mov->resolution==3)
                                           Cam
-                                     @else
+                                      @elseif($mov->resolution==4)
                                           FullHD
-                                     @endif
+                                      @else
+                                          Trailer
+                                      @endif
                               </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                   @if($mov->phude==0)
                                        Phụ đề
+                                        @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
                                 @else
                                        Thuyết minh
+                                       @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
                                    @endif
                               </span> 
                               <div class="icon_overlay"></div>

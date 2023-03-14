@@ -5,7 +5,7 @@
                <div class="panel-heading">
                   <div class="row">
                      <div class="col-xs-6">
-                        <div class="yoast_breadcrumb hidden-xs"><span><span><a href="">{{$country_slug->title}}</a> » <span class="breadcrumb_last" aria-current="page">2022</span></span></span></div>
+                        <div class="yoast_breadcrumb hidden-xs"><span><span><a href="">{{$country_slug->title}}</a> » <span class="breadcrumb_last" aria-current="page">2023</span></span></span></div>
                      </div>
                   </div>
                </div>
@@ -27,20 +27,28 @@
                               <span class="status">
                                  @if($mov->resolution==0)
                                           HD
-                                     @elseif($mov->resolution==1)
+                                      @elseif($mov->resolution==1)
                                           SD
-                                     @elseif($mov->resolution==2)
+                                      @elseif($mov->resolution==2)
                                           HDCam
-                                     @elseif($mov->resolution==3)
+                                      @elseif($mov->resolution==3)
                                           Cam
-                                     @else
+                                      @elseif($mov->resolution==4)
                                           FullHD
-                                     @endif
+                                      @else
+                                          Trailer
+                                      @endif
                               </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
-                                    @if($mov->phude==0)
+                                   @if($mov->phude==0)
                                        Phụ đề
-                                   @else
+                                        @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
+                                @else
                                        Thuyết minh
+                                       @if($mov->season!=0)
+                                          - Seanson {{$mov->season}}
+                                       @endif
                                    @endif
                               </span> 
                               <div class="icon_overlay"></div>
@@ -70,6 +78,6 @@
                   </div>
                </section>
             </main>
-           @include('pages.include.sidebar')
+           @include('pages.include.sidebar') 
          </div>
 @endsection

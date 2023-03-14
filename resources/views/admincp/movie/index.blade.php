@@ -22,10 +22,12 @@
                   <th scope="col">Danh mục</th>
                   <th scope="col">Thể loại</th>
                   <th scope="col">Quốc gia</th>
+                  <th scope="col">Số tập</th>
                   <th scope="col">Ngày tạo</th>
                   <th scope="col">Ngày cập nhật</th>
                   <th scope="col">Năm phim</th>
                   <th scope="col">Top views</th>
+                  <th scope="col">Season</th>
                   <th scope="col">Quản lý</th>
                 </tr>
               </thead>
@@ -34,7 +36,14 @@
                 <tr>
                   <th scope="row">{{$key}}</th>
                   <td>{{$cate->title}}</td>
-                  <td>{{$cate->tags}}</td>
+                  
+                <td>
+                    @if($cate->tags != NULL)
+                      {{ substr($cate->tags, 0, 50) }}...
+                    @else
+                      Chưa có tags cho phim
+                    @endif
+                  </td>
                   <td>{{$cate->thoiluong}}</td>
                   <td><img width="100" src="{{asset('uploads/movie/'.$cate->image)}}"></td>
                   <td>
@@ -53,8 +62,10 @@
                         HDCam
                     @elseif($cate->resolution==3)
                         Cam
-                    @else
+                    @elseif($cate->resolution==4)
                         FullHD
+                    @else
+                        Trailer
                     @endif
                   </td>
                    <td>
@@ -74,16 +85,33 @@
                     @endif
                   </td>
                   <td>{{$cate->category->title}}</td>
-                  <td>{{$cate->genre->title}}</td>
+                  <td>
+                    @foreach($cate->movie_genre as $gen)
+                    <span class="badge badge-pill badge-danger">{{$gen->title}}</span>
+                    @endforeach
+                  </td>
+                  
                   <td>{{$cate->country->title}}</td>
+                  <td>{{$cate->sotap}}</td>
                   <td>{{$cate->ngaytao}}</td>
                   <td>{{$cate->ngaycapnhat}}</td>
                   <td>
-                    {!!Form::selectYear('year',2000,2023, isset($cate->year) ? $cate->year :'' ,['class'=>'select-year','id'=>$cate->id])!!}
+                    <form method="POST">
+                       @csrf
+
+                       {!!Form::selectYear('year',2000,2023, isset($cate->year) ? $cate->year :'' ,['class'=>'select-year','id'=>$cate->id])!!}
+                    </form>
                   </td>
                   <td>
-                    {!! Form::select('topview', ['0'=>'Ngày','1'=>'Tuần','2'=>'Tháng'], isset($topview) ? $movie->topviews : '', ['class'=>'select-topview','id'=>$cate->id]) !!}
+                   {!! Form::select('topview', ['0'=>'Ngày','1'=>'Tuần','2'=>'Tháng'], isset($cate->topview) ? $cate->topview   :'', ['class'=>'select-topview','id'=>$cate->id]) !!}
                   </td>
+                  <td>
+                     <form method="POST">
+                       @csrf
+
+                       {!!Form::selectRange('season',0,20, isset($cate->season) ? $cate->season :'' ,['class'=>'select-season','id'=>$cate->id])!!}
+                    </form>
+                    </td>
                   <td>
                       {!! Form::open(['method'=>'DELETE','route'=>['movie.destroy',$cate->id],'onsubmit'=>'return confirm("Bạn có chắc muốn xóa?")']) !!}
                         {!! Form::submit('Xóa', ['class'=>'btn btn-danger']) !!}

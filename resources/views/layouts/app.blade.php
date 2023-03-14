@@ -91,6 +91,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+   <script type="text/javascript">
+       $('.select-movie').change(function(){
+        var id=$(this).val();
+         $.ajax({
+                url:"{{route('select-movie')}}",
+                method:"GET",
+                data:{id:id},
+                success:function(data)
+                {
+                    $('#show_movie').html(data);
+                }
+            });
+       })
+   </script>
+
+
     <script type="text/javascript">
         $('.select-year').change(function(){
             var year = $(this).find(':selected').val();
@@ -108,18 +124,37 @@
             });
         })
     </script>
-    <script type="text/javascript">
+
+     <script type="text/javascript">
+        $('.select-season').change(function(){
+            var season = $(this).find(':selected').val();
+            var id_phim = $(this).attr('id');
+            // alert(year);
+            // alert(id_phim);
+            $.ajax({
+                url:"{{url('/update-season-phim')}}",
+                method:"GET",
+                data:{season:season, id_phim:id_phim,},
+                success:function()
+                {
+                    alert('Thay đổi phim season '+season+' thành công')
+                }
+            });
+        })
+    </script>
+
+     <script type="text/javascript">
         $('.select-topview').change(function(){
             var topview = $(this).find(':selected').val();
             var id_phim = $(this).attr('id');
             // alert(year);
             // alert(id_phim);
             if(topview==0){
-                var text = 'Ngày' 
-            } else if(topview==1){
-                var text = 'Tuần' 
+                var text ='Ngày';
+            }else if(topview==1){
+                var text ='Tuần';
             }else{
-                var text = 'Tháng'
+                var text ='Ngày';
             }
             $.ajax({
                 url:"{{url('/update-topview-phim')}}",
@@ -127,7 +162,7 @@
                 data:{topview:topview, id_phim:id_phim,},
                 success:function()
                 {
-                    alert('Thay đổi phim theo topview '+text+' thành công')
+                    alert('Thay phim theo topview phim '+text+' thành công')
                 }
             });
         })
