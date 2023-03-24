@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Genre;
 use App\Models\Movie_Genre;
 use App\Models\Country;
+use App\Models\Episode;
 use Carbon\Carbon;
 use Storage;
 use File;
@@ -125,6 +126,7 @@ class MovieController extends Controller
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
+        $movie->thuocphim = $data['thuocphim'];
         foreach($data['genre'] as $key =>$gen){
             $movie->genre_id= $gen[0];
         }
@@ -202,6 +204,7 @@ class MovieController extends Controller
         $movie->description = $data['description'];
         $movie->status = $data['status'];
         $movie->category_id = $data['category_id'];
+        $movie->thuocphim = $data['thuocphim'];
         foreach($data['genre'] as $key =>$gen){
             $movie->genre_id= $gen[0];
         }
@@ -244,9 +247,10 @@ class MovieController extends Controller
         }
         
         //xoá thể loại
-    
         Movie_Genre::whereIn('movie_id',[$movie->id])->delete();
-        
+        //xoá tap phim
+        Episode::whereIn('movie_id',[$movie->id])->delete();
+
         $movie->delete();
         return redirect()->back();
     }

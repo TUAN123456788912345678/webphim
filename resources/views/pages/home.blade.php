@@ -1,3 +1,4 @@
+
 @extends('layout')
 @section('content')
 <div class="row container" id="wrapper">
@@ -105,7 +106,7 @@
                      @foreach($cate_home->movie->take(12) as $key => $mov)
                      <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                         <div class="halim-item">
-                           <a class="halim-thumb" href="chitiet.php">
+                           <a class="halim-thumb" href="{{route('movie',$mov->slug)}}">
                               <figure><img class="lazy img-responsive" src="{{asset('uploads/movie/'.$mov->image)}}" alt="error" title="{{$mov->title}}"></figure>
                               <span class="status">
                                   @if($mov->resolution==0)

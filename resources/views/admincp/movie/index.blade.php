@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <a href="{{route('movie.create')}}" class="btn btn-primary">Thêm Phim</a>
+            <a href="{{route('episode.create')}}" class="btn btn-primary">Thêm Phim</a>
             <table class="table" id="tablephim">
               <thead>
                 <tr>
@@ -20,6 +20,7 @@
                   <th scope="col">Đường dẫn</th>
                   <th scope="col">Trạng thái</th>
                   <th scope="col">Danh mục</th>
+                  <th scope="col">Thuộc thể loại phim</th>
                   <th scope="col">Thể loại</th>
                   <th scope="col">Quốc gia</th>
                   <th scope="col">Số tập</th>
@@ -85,11 +86,19 @@
                     @endif
                   </td>
                   <td>{{$cate->category->title}}</td>
+                   <td>
+                    @if($cate->thuocphim=='phimle')
+                      Phim lẻ
+                    @else
+                      Phim bộ
+                    @endif
+                  </td>
                   <td>
                     @foreach($cate->movie_genre as $gen)
                     <span class="badge badge-pill badge-danger">{{$gen->title}}</span>
                     @endforeach
                   </td>
+
                   
                   <td>{{$cate->country->title}}</td>
                   <td>{{$cate->sotap}}</td>

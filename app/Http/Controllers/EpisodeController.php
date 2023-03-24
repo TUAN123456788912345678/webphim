@@ -26,7 +26,7 @@ class EpisodeController extends Controller
      */
      public function create()
     {
-        $list_movie = Movie::orderBy('id', 'DESC')->pluck('title', 'id')->all();
+        $list_movie = Movie::orderBy('id', 'DESC')->pluck('title', 'id','thuocphim')->all();
         return view('admincp.episode.form', compact('list_movie'));
     }
 
@@ -107,16 +107,30 @@ class EpisodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $episode = Episode::find($id);
+        if ($episode) {
+        $episode->delete();
+        return redirect()->back()->with('success', 'Xoá episode thành công.');
     }
+    return redirect()->back()->with('error', 'Không tìm thấy episode để xoá.');
+    }
+
     public function select_movie(){
         $id =$_GET['id'];
         $movie =Movie::find($id);
         $output='<option>--Chọn tập phim--</option>';
-                              
-        for($i=1;$i<=$movie->sotap;$i++){
+        if($movie->thuocphim=='phimbo'){
+            for($i=1;$i<=$movie->sotap;$i++){
             $output.='<option value="'.$i.'" >'.$i.'</option>';
+            }
+        }else{
+            $output.='<option value="HD" >HD</option>
+            <option value="FullHD" >FullHD</option>;
+            <option value="HDCam" >HDCam</option>;
+            <option value="Cam" >Cam</option>';
+
         }
+        
         echo $output;
     }
 }

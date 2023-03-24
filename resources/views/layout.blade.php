@@ -49,36 +49,44 @@
                   </a>
                </div>
                <div class="col-md-5 col-sm-6 halim-search-form hidden-xs">
-                  <div class="header-nav">
-                     <div class="col-xs-12">
-                        <form id="search-form-pc" name="halimForm" role="search"action="{{route('tim-kiem')}}" method="GET">
-                           <div class="form-group">
-                              <div class="input-group col-xs-12">
-                              <form >
-                                 <input type="text" name="search"  id="timkiem" name="search" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
-                                 <button  class="btn btn-primary" > Tìm kiếm</button>
-                              
-                              </div>
-                           </div>
-                        </form>
-                        <ul class="list-group" id="result" style="display:none;"></ul>
-                     </div>
-                  </div>
+                 <div class="header-nav">
+                   <div class="col-xs-12">
+                     <form class="form-inline" id="search-form-pc" name="halimForm" role="search" action="{{route('tim-kiem')}}" method="GET">
+                       <div class="form-group">
+                         <input type="text" name="search" id="timkiem" class="form-control" placeholder="Tìm kiếm phim..." autocomplete="off">
+                       </div>
+                       <button class="btn btn-primary search-btn" type="submit">Tìm kiếm</button>
+                     </form>
+                     <ul class="list-group" id="result" style="display:none;"></ul>
+                   </div>
+                 </div>
                </div>
-               <div class="col-md hidden-xs">
 
-                   <button  > <a href="/login" class="btn btn-warning"> Đăng nhập</a></button>
-                     <button  ><a href="/register" class="btn btn-primary"> Đăng ký</a></button>
-               
-                  
+               <div class="col-md-4 hidden-xs ">
+                  <ul class="nav-list" >
+                     <li><a href="/login" class="btn-login">Đăng nhập</a></li>
+                     <li><a href="/register" class="btn-signup">Đăng ký</a></li>
+                  </ul>
                </div>
-               <div class="col-md hidden-xs">
-                  <div id="get-bookmark" class="box-shadow"><i class="hl-bookmark"></i><span> Bookmarks</span><span class="count">0</span></div>
-                  <div id="bookmark-list" class="hidden bookmark-list-on-pc">
-                     <ul style="margin: 0;"></ul>
-                  </div>
-               </div>
-            </div>
+
+               <style>
+                  .nav-list li {
+                     display: inline-block;
+                     margin-right: 10px;
+                  }
+                  .btn-login, .btn-signup {
+                     display: inline-block;
+                     padding: 10px;
+                     background-color: #333;
+                     color: #fff;
+                     text-decoration: none;
+                     border-radius: 5px;
+                  }
+                  .btn-login:hover, .btn-signup:hover {
+                     background-color: #555;
+                     }
+                  </style>
+            
          </div>
       </header>
       <div class="navbar-container">
@@ -98,7 +106,7 @@
                   Bookmarks<i class="hl-bookmark" aria-hidden="true"></i>
                   <span class="count">0</span>
                   </button>
-                  <button type="button" class="navbar-toggle collapsed pull-right get-locphim-on-mobile">
+                 <button type="button" class="navbar-toggle collapsed pull-right get-locphim-on-mobile">
                   <a href="javascript:;" id="expand-ajax-filter" style="color: #ffed4d;">Lọc <i class="fas fa-filter"></i></a>
                   </button>
                </div>
@@ -136,9 +144,9 @@
                         
                      </ul>
                   </div>
-                  <ul class="nav navbar-nav navbar-left" style="background:#000;">
+                  <!-- <ul class="nav navbar-nav navbar-left" style="background:#000;">
                      <li><a href="#" onclick="locphim()" style="color: #ffed4d;">Lọc Phim</a></li>
-                  </ul>
+                  </ul> -->
                </div>
             </nav>
             <div class="collapse navbar-collapse" id="search-form">

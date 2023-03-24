@@ -1,0 +1,1 @@
+locphim.blade.php
