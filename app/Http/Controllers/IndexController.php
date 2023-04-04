@@ -9,6 +9,7 @@ use App\Models\Country;
 use App\Models\Movie;
 use App\Models\Episode;
 use App\Models\Movie_Genre;
+use App\Models\Rating;
 use DB;
 
 class IndexController extends Controller
@@ -55,6 +56,7 @@ class IndexController extends Controller
 
         return view('pages.locphim', compact('category', 'genre', 'country', 'movie', 'phimhot_sidebar', 'phimhot_trailer'));
     }
+
 }
 
 
@@ -157,9 +159,33 @@ class IndexController extends Controller
         // lấy tông tập phim đã thêm 
         $episode_current_list = Episode::with('movie')->where('movie_id',$movie->id)->get();
         $episode_current_list_count =$episode_current_list->count();
+        //rating movie
+        $movie_id = 123; // replace 123 with the actual movie ID value
+        $rating = Rating::where('movie_id', $movie_id)->avg('rating');
+        $rating = round($rating);
 
 
-    	return view('pages.movie', compact('category','genre','country','movie','related','phimhot_sidebar','phimhot_trailer','phimhot_trailer','episode','episode_tapdau','episode_current_list_count'));
+       $count_total = Rating::where('movie_id', $movie->id)->count();
+
+
+    	return view('pages.movie', compact('category','genre','country','movie','related','phimhot_sidebar','phimhot_trailer','phimhot_trailer','episode','episode_tapdau','episode_current_list_count','rating','count_total'));
+    }
+    public function add_rating(Request $request){
+        $data =request->all();
+        $ip_address =$request->ip();
+
+        $rating_count =Rating::where('movie_id',$data['movie_id'])->where('ip_address',$ip_address)->count();
+        if($rating_count>0){
+            echo 'exist';
+        }else{
+            $rating =new Rating();
+            $rating->movie_id = $data['movie_id'];
+            $rating->rating =$data['index'];
+            $rating->ip_address = $ip_address;
+            $rating->save();
+            echo 'done';
+        }
+    
     }
     public function watch($slug,$tap){
         $category = Category::orderBy('position','ASC')->where('status',1)->get();

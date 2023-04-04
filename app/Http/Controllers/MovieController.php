@@ -64,7 +64,7 @@ class MovieController extends Controller
         $movie->topview = $data ['topview'];
         $movie->save();
     }
-    public function filter_topviewf(Request $request ){
+    public function filter_topview(Request $request ){
         $data = $requestr->all();
         $movie = Movie::where('topview',$data['value'])->orderBy('ngaycapnhat'.'DESC')->take(20)->get();
         $output ='';

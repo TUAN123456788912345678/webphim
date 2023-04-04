@@ -29,13 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-      protected function redirectTo()
-    {
-    if(Auth::user()->isAdmin()) {
-        return route('home'); // Chuyển hướng admin đến trang quản lý
-    }
-    return route('layout'); // Chuyển hướng người dùng thông thường đến trang chủ
-    }
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.

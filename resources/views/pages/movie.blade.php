@@ -110,28 +110,22 @@
                                  <li class="list-info-group-item"><span>Quốc gia</span> : 
                                     <a href="{{route('country',$movie->country->slug)}}" rel="tag">{{$movie->country->title}}</a>
                                  </li>
-                                
-                               @if($movie)
-                                 <li class="list-info-group-item"><span>Tập Phim</span>:
-                                 @if($episode_current_list_count > 0)
-                                 @if($movie->thuocphim=='phimbo')
-                                 @foreach($episode as $key => $ep)
-                                 <a href="{{url('xem-phim/'.$ep->movie->slug.'/tap-'.$ep->episode)}}" rel="tag">Tập{{$ep->episode}}</a>
-                                 @endforeach
-                                 @elseif($movie->thuocphim=='phimle')
-                                 @foreach($episode as $key => $ep_le)
-                                 <a href="{{url('xem-phim/'.$movie->slug.'/tap-'.$ep_le->episode)}}" rel="tag">{{$ep_le->episode}}</a>
-                                 @endforeach
-                                 @endif
-                                 @endif
-                                 </li>
-                                 @endif
+                                 @if($movie && $movie->thuocphim=='phimbo')
+                                      <li class="list-info-group-item"><span>Tập Phim</span>:
+                                      @if($episode_current_list_count > 0)
+                                        @foreach($episode as $key => $ep)
+                                          <a href="{{url('xem-phim/'.$ep->movie->slug.'/tap-'.$ep->episode)}}" rel="tag">Tập{{$ep->episode}}</a>
+                                        @endforeach
+                                      @endif
+                                      </li>
+                                    @endif
 
                                  <li class="list-info-group-item"><span>Năm </span> : 
                                    {{$movie->year}}
                                  </li>
                                  
                               </ul>
+
                               <div class="movie-trailer hidden"></div>
                            </div>
                         </div>
@@ -170,21 +164,7 @@
                            </article>
                         </div>
                      </div>
-                      <!--Comment-->
-                      <div class="section-bar clearfix">
-                        <h2 class="section-title"><span style="color:#ffed4d">Bình luận</span></h2>
-                     </div>
-                     <div class="entry-content htmlwrap clearfix">
-                                  @php
-                                 $current_url = Request::url();
-                                 @endphp
-                        <div class="video-item halim-entry-box">
-                           <article id="post-38424" class="item-content">
-                            <div class="fb-comments" data-href="{{$current_url}}" data-width="100%" data-numposts="10"></div>
-                           </article>
-                        </div>
-                     </div>
-                      <!--Trailer-->
+                       <!--Trailer-->
                       <div class="section-bar clearfix">
                         <h2 class="section-title"><span style="color:#ffed4d">Trailer</span></h2>
                      </div>
@@ -198,6 +178,21 @@
                         </div>
                      </div>
                   </div>
+                      <!--Comment-->
+                <div class="section-bar clearfix">
+                   <h2 class="section-title"><span style="color:#ffed4d">Bình luận</span></h2>
+                     </div>
+                     <div class="entry-content htmlwrap clearfix" style="background-color: #fff;">
+                         @php
+                         $current_url = Request::url();
+                         @endphp
+                         <div class="video-item halim-entry-box">
+                             <article id="post-38424" class="item-content">
+                                 <div class="fb-comments" data-href="{{$current_url}}" data-width="100%" data-numposts="10" style="border: 1px solid #ccc;"></div>
+                             </article>
+                         </div>
+                     </div>
+
                </section>
 <section class="related-movies">
     <div id="halim_related_movies-2" class="wrap-slider">

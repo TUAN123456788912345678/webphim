@@ -133,6 +133,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+    
 
     'providers' => [
 
@@ -176,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
     ],
+
 
     /*
     |--------------------------------------------------------------------------

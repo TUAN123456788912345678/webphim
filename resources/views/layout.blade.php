@@ -9,7 +9,9 @@
       <meta name="DC.language" scheme="utf-8" content="vi" />
       <meta name="language" content="Việt Nam">
       
-
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            
       <link rel="shortcut icon" href="https://www.pngkey.com/png/detail/360-3601772_your-logo-here-your-company-logo-here-png.png" type="image/x-icon" />
       <meta name="revisit-after" content="1 days" />
       <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
@@ -117,9 +119,10 @@
                         <li class="mega dropdown">
                            <a title="Thể Loại" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">Thể Loại <span class="caret"></span></a>
                            <ul role="menu" class=" dropdown-menu">
-                              @foreach($genre as $key => $gen)
-                              <li><a title="{{$gen->title}}" href="{{route('genre',$gen->slug)}}">{{$gen->title}}</a></li>
-                              @endforeach
+                            
+                             @foreach($genre ?? '' as $key => $gen)
+                                  <li><a title="{{$gen->title}}" href="{{route('genre',$gen->slug)}}">{{$gen->title}}</a></li>
+                              @endforeach      
                            </ul>
                         </li>
                         <li class="mega dropdown">
@@ -253,8 +256,83 @@
 
        })
     </script>
-     
-     
+         
+
+         Đoạn script đánh giá phim : 
+         <script type="text/javascript">
+                 
+                   function remove_background(movie_id)
+                    {
+                     for(var count = 1; count <= 5; count++)
+                     {
+                      $('#'+movie_id+'-'+count).css('color', '#ccc');
+                     }
+                   }
+
+                   //hover chuột đánh giá sao
+                  $(document).on('mouseenter', '.rating', function(){
+                     var index = $(this).data("index");
+                     var movie_id = $(this).data('movie_id');
+                   // alert(index);
+                   // alert(movie_id);
+                     remove_background(movie_id);
+                     for(var count = 1; count<=index; count++)
+                     {
+                      $('#'+movie_id+'-'+count).css('color', '#ffcc00');
+                     }
+                   });
+                  //nhả chuột ko đánh giá
+                  $(document).on('mouseleave', '.rating', function(){
+                     var index = $(this).data("index");
+                     var movie_id = $(this).data('movie_id');
+                     var rating = $(this).data("rating");
+                     remove_background(movie_id);
+                     //alert(rating);
+                     for(var count = 1; count<=rating; count++)
+                     {
+                      $('#'+movie_id+'-'+count).css('color', '#ffcc00');
+                     }
+                    });
+
+                   //click đánh giá sao
+                   $(document).on('click', '.rating', function(){
+                      
+                         var index = $(this).data("index");
+                         var movie_id = $(this).data('movie_id');
+                     
+                         $.ajax({
+                          url:"{{route('add-rating')}}",
+                          method:"POST",
+                          data:{index:index, movie_id:movie_id},
+                            headers: {
+                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                           },
+                          success:function(data)
+                          {
+                           if(data == 'done')
+                           {
+                            
+                            alert("Bạn đã đánh giá "+index +" trên 5");
+                            location.reload();
+                            
+                           }else if(data =='exist'){
+                             alert("Bạn đã đánh giá phim này rồi,cảm ơn bạn nhé");
+                           }
+                           else
+                           {
+                            alert("Lỗi đánh giá");
+                           }
+                           
+                          }
+                         });
+                       
+                       
+                         
+                   });
+
+              
+               </script>
+               <script src="{{ asset('js/app.js') }}"></script>
    
       <style>#overlay_mb{position:fixed;display:none;width:100%;height:100%;top:0;left:0;right:0;bottom:0;background-color:rgba(0, 0, 0, 0.7);z-index:99999;cursor:pointer}#overlay_mb .overlay_mb_content{position:relative;height:100%}.overlay_mb_block{display:inline-block;position:relative}#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:600px;height:auto;position:relative;left:50%;top:50%;transform:translate(-50%, -50%);text-align:center}#overlay_mb .overlay_mb_content .cls_ov{color:#fff;text-align:center;cursor:pointer;position:absolute;top:5px;right:5px;z-index:999999;font-size:14px;padding:4px 10px;border:1px solid #aeaeae;background-color:rgba(0, 0, 0, 0.7)}#overlay_mb img{position:relative;z-index:999}@media only screen and (max-width: 768px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:400px;top:3%;transform:translate(-50%, 3%)}}@media only screen and (max-width: 400px){#overlay_mb .overlay_mb_content .overlay_mb_wrapper{width:310px;top:3%;transform:translate(-50%, 3%)}}</style>
     
